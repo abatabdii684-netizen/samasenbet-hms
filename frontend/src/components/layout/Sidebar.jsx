@@ -144,10 +144,10 @@ function NavItem({ item, collapsed }) {
       <NavLink
         to={item.to}
         className={({ isActive }) =>
-          `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 group
+          `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 group
            ${isActive
-             ? 'bg-primary-600 text-white shadow-sm'
-             : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white'
+             ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
+             : 'text-gray-600 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 hover:text-blue-700 dark:hover:text-white'
            }`
         }
         title={collapsed ? item.label : undefined}
@@ -165,11 +165,11 @@ function NavItem({ item, collapsed }) {
     <div>
       <button
         onClick={() => !collapsed && setOpen(!open)}
-        className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
+        className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium
                     transition-all duration-150
                     ${isGroupActive
-                      ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-950'
-                      : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                      ? 'text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/50'
+                      : 'text-gray-600 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 hover:text-blue-700 dark:hover:text-white'
                     }`}
         title={collapsed ? item.label : undefined}
       >
@@ -186,7 +186,7 @@ function NavItem({ item, collapsed }) {
       </button>
 
       {!collapsed && open && (
-        <div className="ml-4 mt-1 space-y-0.5 border-l-2 border-gray-200 dark:border-gray-700 pl-3">
+        <div className="ml-4 mt-1 space-y-0.5 border-l-2 border-blue-100 dark:border-gray-700 pl-3">
           {item.children.map((child) => {
             if (child.permission && !hasPermission(child.permission)) return null;
             return (
@@ -196,8 +196,8 @@ function NavItem({ item, collapsed }) {
                 className={({ isActive }) =>
                   `flex items-center px-3 py-2 rounded-lg text-sm transition-all
                    ${isActive
-                     ? 'bg-primary-600 text-white'
-                     : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white'
+                     ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium shadow-sm'
+                     : 'text-gray-500 dark:text-gray-400 hover:bg-blue-50 dark:hover:bg-gray-700 hover:text-blue-700 dark:hover:text-white'
                    }`
                 }
               >
@@ -244,18 +244,18 @@ function SidebarContent({ collapsed, onToggleCollapse, onClose }) {
       <div className={`flex items-center justify-between px-4 py-4 border-b border-gray-200 dark:border-gray-700 flex-shrink-0`}>
         {!collapsed && (
           <div className="flex items-center gap-2 min-w-0">
-            <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center flex-shrink-0">
-              <span className="text-white text-xs font-bold">YFM</span>
+            <div className="w-9 h-9 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
+              <span className="text-white text-xs font-black">YFM</span>
             </div>
             <div className="min-w-0">
               <p className="text-xs font-bold text-gray-900 dark:text-white leading-tight truncate">YFM General Hospital</p>
-              <p className="text-xs text-gray-500 dark:text-gray-400 truncate">PLC — HMS v1.0</p>
+              <p className="text-xs text-gray-400 dark:text-gray-500 truncate">HMS v1.0</p>
             </div>
           </div>
         )}
         {collapsed && (
-          <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center mx-auto">
-            <span className="text-white text-xs font-bold">YFM</span>
+          <div className="w-9 h-9 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center mx-auto shadow-md">
+            <span className="text-white text-xs font-black">YFM</span>
           </div>
         )}
         {onClose && (

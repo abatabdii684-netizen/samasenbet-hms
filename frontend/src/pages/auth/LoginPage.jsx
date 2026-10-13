@@ -5,7 +5,6 @@ import { authAPI } from '@api/auth.api';
 import { useAuthStore } from '@store/authStore';
 import toast from 'react-hot-toast';
 import { EyeIcon, EyeSlashIcon, LockClosedIcon } from '@heroicons/react/24/outline';
-import FormField from '@components/common/FormField';
 
 function LoginPage() {
   const navigate  = useNavigate();
@@ -38,35 +37,53 @@ function LoginPage() {
 
   return (
     <div>
-      <div className="text-center mb-6">
-        <div className="inline-flex items-center justify-center w-12 h-12 bg-primary-100 dark:bg-primary-900 rounded-xl mb-3">
-          <LockClosedIcon className="w-6 h-6 text-primary-600" />
+      {/* Header */}
+      <div className="text-center mb-8">
+        <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl mb-4 shadow-lg">
+          <LockClosedIcon className="w-7 h-7 text-white" />
         </div>
-        <h2 className="text-xl font-bold text-gray-900 dark:text-white">Sign in</h2>
-        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 leading-snug">
-          Yohannes Fantaye Metasebiya General Hospital PLC
+        <h2 className="text-2xl font-black text-gray-900 dark:text-white">Welcome back</h2>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          Sign in to your HMS account
         </p>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <FormField label="Email Address" error={errors.email?.message} required>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+
+        {/* Email */}
+        <div>
+          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">
+            Email Address
+          </label>
           <input
             type="email"
             placeholder="admin@yfmhospital.com"
-            className={`input ${errors.email ? 'input-error' : ''}`}
+            className={`input h-11 ${errors.email ? 'input-error' : ''}`}
             {...register('email', {
               required: 'Email is required',
               pattern: { value: /^\S+@\S+\.\S+$/, message: 'Enter a valid email' },
             })}
           />
-        </FormField>
+          {errors.email && (
+            <p className="text-xs text-red-500 mt-1">{errors.email.message}</p>
+          )}
+        </div>
 
-        <FormField label="Password" error={errors.password?.message} required>
+        {/* Password */}
+        <div>
+          <div className="flex items-center justify-between mb-1.5">
+            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
+              Password
+            </label>
+            <a href="/forgot-password" className="text-xs text-blue-600 hover:text-blue-700 font-medium hover:underline">
+              Forgot password?
+            </a>
+          </div>
           <div className="relative">
             <input
               type={showPwd ? 'text' : 'password'}
               placeholder="••••••••"
-              className={`input pr-10 ${errors.password ? 'input-error' : ''}`}
+              className={`input h-11 pr-10 ${errors.password ? 'input-error' : ''}`}
               {...register('password', {
                 required: 'Password is required',
                 minLength: { value: 6, message: 'Minimum 6 characters' },
@@ -75,36 +92,40 @@ function LoginPage() {
             <button
               type="button"
               onClick={() => setShowPwd(!showPwd)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
             >
-              {showPwd ? <EyeSlashIcon className="w-4 h-4" /> : <EyeIcon className="w-4 h-4" />}
+              {showPwd ? <EyeSlashIcon className="w-5 h-5" /> : <EyeIcon className="w-5 h-5" />}
             </button>
           </div>
-        </FormField>
-
-        <div className="flex justify-end">
-          <a href="/forgot-password" className="text-xs text-primary-600 hover:underline">
-            Forgot password?
-          </a>
+          {errors.password && (
+            <p className="text-xs text-red-500 mt-1">{errors.password.message}</p>
+          )}
         </div>
 
+        {/* Submit */}
         <button
           type="submit"
           disabled={loading}
-          className="btn-primary w-full justify-center py-2.5"
+          className="w-full h-11 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700
+                     text-white font-semibold rounded-lg transition-all duration-200
+                     shadow-md hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed
+                     flex items-center justify-center gap-2 mt-2"
         >
           {loading ? (
-            <span className="flex items-center gap-2">
+            <>
               <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               Signing in...
-            </span>
-          ) : 'Sign In'}
+            </>
+          ) : 'Sign In →'}
         </button>
       </form>
 
-      <p className="text-center text-xs text-gray-400 dark:text-gray-500 mt-6">
-        Default Admin: admin@yfmhospital.com / Admin@123456
-      </p>
+      {/* Divider + hint */}
+      <div className="mt-6 pt-5 border-t border-gray-100 dark:border-gray-700">
+        <p className="text-center text-xs text-gray-400 dark:text-gray-500">
+          🔑 Default: <span className="font-mono text-gray-500">admin@yfmhospital.com</span> / <span className="font-mono text-gray-500">Admin@123456</span>
+        </p>
+      </div>
     </div>
   );
 }

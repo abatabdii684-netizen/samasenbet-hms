@@ -26,23 +26,24 @@ const fmtETB = (n) => `ETB ${Number(n || 0).toLocaleString(undefined, { maximumF
 // ── Stat card ─────────────────────────────────────────────────────
 function StatCard({ title, value, icon: Icon, color, loading, sub }) {
   const colors = {
-    blue:   'bg-blue-50   text-blue-600   dark:bg-blue-900/20',
-    green:  'bg-green-50  text-green-600  dark:bg-green-900/20',
-    purple: 'bg-purple-50 text-purple-600 dark:bg-purple-900/20',
-    red:    'bg-red-50    text-red-600    dark:bg-red-900/20',
-    yellow: 'bg-yellow-50 text-yellow-600 dark:bg-yellow-900/20',
+    blue:   { bg: 'bg-gradient-to-br from-blue-500 to-blue-600',     icon: 'text-white', card: 'border-blue-100   dark:border-blue-900/30' },
+    green:  { bg: 'bg-gradient-to-br from-emerald-500 to-green-600', icon: 'text-white', card: 'border-green-100  dark:border-green-900/30' },
+    purple: { bg: 'bg-gradient-to-br from-purple-500 to-indigo-600', icon: 'text-white', card: 'border-purple-100 dark:border-purple-900/30' },
+    red:    { bg: 'bg-gradient-to-br from-rose-500 to-red-600',      icon: 'text-white', card: 'border-red-100    dark:border-red-900/30'    },
+    yellow: { bg: 'bg-gradient-to-br from-amber-400 to-orange-500',  icon: 'text-white', card: 'border-yellow-100 dark:border-yellow-900/30' },
   };
+  const c = colors[color] || colors.blue;
   return (
-    <div className="card p-5 flex items-center gap-4">
-      <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${colors[color] || colors.blue}`}>
-        <Icon className="w-6 h-6" />
+    <div className={`card p-5 flex items-center gap-4 border ${c.card}`}>
+      <div className={`w-13 h-13 w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-md ${c.bg}`}>
+        <Icon className={`w-6 h-6 ${c.icon}`} />
       </div>
       <div className="min-w-0">
-        <p className="text-xs font-medium text-gray-500 dark:text-gray-400 truncate">{title}</p>
+        <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide truncate">{title}</p>
         {loading ? (
           <div className="h-7 w-16 bg-gray-200 dark:bg-gray-700 rounded animate-pulse mt-1" />
         ) : (
-          <p className="text-2xl font-bold text-gray-900 dark:text-white leading-tight">{value}</p>
+          <p className="text-2xl font-black text-gray-900 dark:text-white leading-tight">{value}</p>
         )}
         {sub && !loading && (
           <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{sub}</p>
