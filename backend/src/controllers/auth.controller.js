@@ -9,6 +9,20 @@ const ApiResponse  = require('../utils/apiResponse');
 const AppError     = require('../utils/AppError');
 const { createAuditLog } = require('../middlewares/auditLog');
 
+const REFRESH_COOKIE_MAX_AGE = 7 * 24 * 60 * 60 * 1000;
+
+// Dev previews run inside a cross-site iframe, where SameSite=Strict/Lax cookies are never sent.
+const refreshCookieOptions = ({ clear = false } = {}) => {
+  const isProduction = process.env.NODE_ENV === 'production';
+  return {
+    httpOnly: true,
+    secure:   true,
+    sameSite: isProduction ? 'strict' : 'none',
+    path:     '/',
+    ...(clear ? {} : { maxAge: REFRESH_COOKIE_MAX_AGE }),
+  };
+};
+
 class AuthController {
   /**
    * POST /auth/login
@@ -18,12 +32,7 @@ class AuthController {
     const result = await AuthService.login(email, password, req.ip);
 
     // Set refresh token as HTTP-only cookie
-    res.cookie('refreshToken', result.refreshToken, {
-      httpOnly: true,
-      secure:   process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge:   7 * 24 * 60 * 60 * 1000, // 7 days
-    });
+    res.cookie('refreshToken', result.refreshToken, refreshCookieOptions());
 
     await createAuditLog({
       userId:      result.user.id,
@@ -49,12 +58,7 @@ class AuthController {
 
     const result = await AuthService.refreshToken(token);
 
-    res.cookie('refreshToken', result.refreshToken, {
-      httpOnly: true,
-      secure:   process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge:   7 * 24 * 60 * 60 * 1000,
-    });
+    res.cookie('refreshToken', result.refreshToken, refreshCookieOptions());
 
     return ApiResponse.success(res, { accessToken: result.accessToken }, 'Token refreshed');
   });
@@ -65,7 +69,7 @@ class AuthController {
   logout = asyncHandler(async (req, res) => {
     await AuthService.logout(req.userId);
 
-    res.clearCookie('refreshToken');
+    res.clearCookie('refreshToken', refreshCookieOptions({ clear: true }));
 
     await createAuditLog({
       userId:      req.userId,
