@@ -8,7 +8,7 @@ const AuthController   = require('../controllers/auth.controller');
 // Login
 router.post('/login',
   [
-    body('email').isEmail().normalizeEmail().withMessage('Valid email required'),
+    body('email').trim().isEmail().normalizeEmail().withMessage('Valid email required'),
     body('password').notEmpty().withMessage('Password required'),
   ],
   validate,
@@ -26,7 +26,7 @@ router.get('/me', authenticate, AuthController.getMe);
 
 // Forgot password
 router.post('/forgot-password',
-  [body('email').isEmail().normalizeEmail().withMessage('Valid email required')],
+  [body('email').trim().isEmail().normalizeEmail().withMessage('Valid email required')],
   validate,
   AuthController.forgotPassword
 );
