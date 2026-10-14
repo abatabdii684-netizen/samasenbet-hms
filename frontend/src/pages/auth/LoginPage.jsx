@@ -22,7 +22,10 @@ function LoginPage() {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      const res = await authAPI.login(data);
+      const res = await authAPI.login({
+        email: data.email.trim().toLowerCase(),
+        password: data.password,
+      });
       const { user, accessToken } = res.data.data;
       setAuth(user, accessToken);
       toast.success(`Welcome back, ${user.employee?.firstName || user.username}!`);

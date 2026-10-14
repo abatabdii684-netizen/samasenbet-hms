@@ -21,7 +21,7 @@ class AuthService {
     }
 
     const user = await prisma.user.findUnique({
-      where: { email: email.toLowerCase() },
+      where: { email: String(email).trim().toLowerCase() },
       include: {
         role: {
           include: {
