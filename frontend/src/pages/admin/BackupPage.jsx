@@ -54,7 +54,7 @@ export default function BackupPage() {
 
   const handleDownload = (id) => {
     const token = localStorage.getItem('accessToken');
-    const url   = `${import.meta.env.VITE_API_BASE_URL}/backup/download/${encodeURIComponent(id)}`;
+    const url   = `${import.meta.env.VITE_API_BASE_URL || '/api/v1'}/backup/download/${encodeURIComponent(id)}`;
     const a     = document.createElement('a');
     a.href      = url;
     a.setAttribute('download', id);
